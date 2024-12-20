@@ -1,10 +1,11 @@
 package com.marketsystem.api.v1.product.controller;
 
+import com.marketsystem.api.v1.common.enums.BusinessCode;
 import com.marketsystem.api.v1.common.utils.CommonResponse;
 import com.marketsystem.api.v1.product.dto.ProductRequestDto;
 import com.marketsystem.api.v1.product.dto.ProductResponseDto;
 import com.marketsystem.api.v1.product.service.ProductService;
-import jakarta.websocket.server.PathParam;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,32 +20,32 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<?> createProducts(@RequestBody List<ProductRequestDto.Save> saveDtos) {
+    public ResponseEntity<?> createProducts(@Valid @RequestBody List<ProductRequestDto.Save> saveDtos) {
         productService.createProduct(saveDtos);
-        return ResponseEntity.ok(CommonResponse.success());
+        return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS));
     }
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProduct(@PathVariable long productId) {
         ProductResponseDto res = productService.getProduct(productId);
-        return ResponseEntity.ok(CommonResponse.success(res));
+        return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS,res));
     }
 
     @GetMapping
     public ResponseEntity<?> getProductList() {
-        List<ProductResponseDto> res =productService.getAllProducts();
-        return ResponseEntity.ok(CommonResponse.success(res));
+        var res =productService.getAllProducts();
+        return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS, res));
     }
 
     @PatchMapping
-    public ResponseEntity<?> updateProduct(@RequestBody ProductRequestDto.Update updateDto) {
+    public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductRequestDto.Update updateDto) {
         productService.updateProduct(updateDto);
-        return ResponseEntity.ok(CommonResponse.success());
+        return ResponseEntity.ok(CommonResponse.success(BusinessCode.UPDATE));
     }
 
     @DeleteMapping
     public ResponseEntity<?> deleteProduct(@RequestParam long productId) {
         productService.deleteProduct(productId);
-        return ResponseEntity.ok(CommonResponse.success());
+        return ResponseEntity.ok(CommonResponse.success(BusinessCode.PRODUCT_DELETED));
     }
 }

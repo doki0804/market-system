@@ -41,4 +41,8 @@ public class OrderItem extends BaseEntity {
     protected void associateWithOrder(Orders order) {
         this.order = order;
     }
+    protected void dissociateWithOrder() {
+        this.order = null;
+    }
+
 }

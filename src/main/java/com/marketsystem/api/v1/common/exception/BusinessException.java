@@ -1,5 +1,7 @@
 package com.marketsystem.api.v1.common.exception;
 
+import com.marketsystem.api.v1.common.enums.ErrorCode;
+
 public class BusinessException extends RuntimeException {
     private final ErrorCode errorCode;
 
@@ -9,7 +11,7 @@ public class BusinessException extends RuntimeException {
     }
 
     public BusinessException(ErrorCode errorCode, String additionalMessage) {
-        super(errorCode.getMessage() + ": " + additionalMessage);
+        super(additionalMessage);
         this.errorCode = errorCode;
     }
 

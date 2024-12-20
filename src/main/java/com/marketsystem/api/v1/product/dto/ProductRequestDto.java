@@ -1,5 +1,7 @@
 package com.marketsystem.api.v1.product.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +14,12 @@ public class ProductRequestDto {
     @Setter
     @AllArgsConstructor
     public static class Save{
+        @NotBlank
         private String name;
         private String description;
+        @NotNull
         private Long price;
+        @NotNull
         private Integer stock;
     }
 
@@ -22,6 +27,7 @@ public class ProductRequestDto {
     @Setter
     @AllArgsConstructor
     public static class Update{
+        @NotNull
         private Long id;
         private String name;
         private String description;

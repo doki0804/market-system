@@ -50,6 +50,12 @@ public class Orders extends BaseEntity {
         orderItem.associateWithOrder(this);
     }
 
+    // 주문 항목 제거 메서드
+    public void removeOrderItem(OrderItem orderItem) {
+        orderItems.remove(orderItem);
+        orderItem.dissociateWithOrder();
+    }
+
     public void markAsPaid() {
         this.status = OrderStatus.PAID;
     }

@@ -1,5 +1,7 @@
 package com.marketsystem.api.v1.product.service;
 
+import com.marketsystem.api.v1.common.enums.ErrorCode;
+import com.marketsystem.api.v1.common.exception.BusinessException;
 import com.marketsystem.api.v1.product.dto.ProductRequestDto;
 import com.marketsystem.api.v1.product.dto.ProductResponseDto;
 import com.marketsystem.api.v1.product.entity.Product;
@@ -42,6 +44,11 @@ public class ProductService {
     public void updateProduct(ProductRequestDto.Update productDto) {
         Product updateProduct = productRepository.findById(productDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product ID: " + productDto.getId()));
+        if(productDto.getStock() != null) {
+            if(updateProduct.getStock() + productDto.getStock() < 0)
+                throw new BusinessException(ErrorCode.OUT_OF_STOCK);
+            productDto.setStock(updateProduct.getStock() + productDto.getStock());
+        }
         productMapper.updateEntityFromDto(productDto, updateProduct);
     }
 

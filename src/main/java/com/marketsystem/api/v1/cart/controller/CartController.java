@@ -3,30 +3,34 @@ package com.marketsystem.api.v1.cart.controller;
 import com.marketsystem.api.v1.cart.dto.CartItemDto;
 import com.marketsystem.api.v1.cart.dto.CartRequestDto;
 import com.marketsystem.api.v1.cart.service.CartService;
+import com.marketsystem.api.v1.common.enums.BusinessCode;
 import com.marketsystem.api.v1.common.utils.CommonResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
-
     private final CartService cartService;
 
-    @GetMapping
+    @GetMapping(value = "{customerId}")
     public ResponseEntity<?> getCartList(@PathVariable Long customerId){
-        List<CartItemDto> res = cartService.getCartItems(customerId);
-        return ResponseEntity.ok().body(CommonResponse.success(res));
+        CartItemDto res = cartService.getCartItems(customerId);
+        return ResponseEntity.ok().body(CommonResponse.success(BusinessCode.SUCCESS,res));
     }
 
     @PostMapping
-    public ResponseEntity<?> addCart(@RequestBody CartRequestDto cartRequestDto){
-        System.out.println(cartRequestDto);
-        cartService.addToCart(cartRequestDto.getCustomerId(), cartRequestDto.getProductId(), cartRequestDto.getQuantity());
-        return ResponseEntity.ok().body(CommonResponse.success());
+    public ResponseEntity<?> addCart(@Valid @RequestBody CartRequestDto cartRequestDto){
+        cartService.addToCart(cartRequestDto);
+        return ResponseEntity.ok().body(CommonResponse.success(BusinessCode.SUCCESS));
+    }
+
+    @DeleteMapping("{customerId}")
+    public ResponseEntity<?> clearCart(@PathVariable Long customerId){
+        cartService.clearCart(customerId);
+        return ResponseEntity.ok().body(CommonResponse.success(BusinessCode.CART_CLEARED));
     }
 }

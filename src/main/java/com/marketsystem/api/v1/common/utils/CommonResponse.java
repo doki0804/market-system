@@ -1,6 +1,7 @@
 package com.marketsystem.api.v1.common.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.marketsystem.api.v1.common.enums.BusinessCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,12 @@ public class CommonResponse<T> {
     private String message;
     private T data;
 
-    public static <T> CommonResponse<T> success(T data) {
-        return new CommonResponse<>(0, "success", data);
+    public static <T> CommonResponse<T> success(BusinessCode businessCode, T data) {
+        return new CommonResponse<>(businessCode.getStatus(), businessCode.getMessage(), data);
     }
 
-    public static CommonResponse<Void> success() {
-        return new CommonResponse<>(0, "success", null);
+    public static CommonResponse<Void> success(BusinessCode businessCode) {
+        return new CommonResponse<>( businessCode.getStatus(), businessCode.getMessage(), null);
     }
 
     public static <T> CommonResponse<T> error(int code, String message) {
