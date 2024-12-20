@@ -40,6 +40,12 @@ public class ProductService {
         return productMapper.toDtoList(products);
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductResponseDto> getAvailablePurchaseProducts() {
+        List<Product> products = productRepository.findByStockGreaterThanEqual(0);
+        return productMapper.toDtoList(products);
+    }
+
     @Transactional
     public void updateProduct(ProductRequestDto.Update productDto) {
         Product updateProduct = productRepository.findById(productDto.getId())

@@ -8,4 +8,5 @@ import java.util.Set;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByIdIn(Set<Long> ids);
+    List<Product> findByStockGreaterThanEqual(int stock);
 }

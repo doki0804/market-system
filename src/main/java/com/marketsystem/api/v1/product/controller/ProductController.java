@@ -32,8 +32,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getProductList() {
+    public ResponseEntity<?> getAllProductList() {
         var res =productService.getAllProducts();
+        return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS, res));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAvailablePurchaseProductList() {
+        var res =productService.getAvailablePurchaseProducts();
         return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS, res));
     }
 
