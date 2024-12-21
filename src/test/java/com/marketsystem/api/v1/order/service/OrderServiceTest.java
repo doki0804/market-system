@@ -41,12 +41,6 @@ class OrderServiceTest {
     @InjectMocks
     private OrderService orderService;
 
-    @Captor
-    private ArgumentCaptor<Long> customerIdCaptor;
-
-    @Captor
-    private ArgumentCaptor<Long> orderIdCaptor;
-
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
@@ -125,9 +119,7 @@ class OrderServiceTest {
         when(orderCalculationService.calculateOrderInfo(customerId)).thenThrow(new BusinessException(ErrorCode.CART_EMPTY, "No items in cart"));
 
         // When & Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            orderService.placeOrder(customerId);
-        });
+        BusinessException exception = assertThrows(BusinessException.class, () -> orderService.placeOrder(customerId));
 
         assertEquals(ErrorCode.CART_EMPTY, exception.getErrorCode());
         assertEquals("No items in cart", exception.getMessage());
@@ -253,9 +245,7 @@ class OrderServiceTest {
         when(ordersRepository.findById(orderId)).thenReturn(Optional.empty());
 
         // When & Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            orderService.getOrderDetail(orderId);
-        });
+        BusinessException exception = assertThrows(BusinessException.class, () -> orderService.getOrderDetail(orderId));
 
         assertEquals(ErrorCode.ORDER_NOT_FOUND, exception.getErrorCode());
         assertEquals("Order ID: " + orderId, exception.getMessage());

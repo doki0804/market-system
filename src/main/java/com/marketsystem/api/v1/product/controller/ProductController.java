@@ -8,7 +8,6 @@ import com.marketsystem.api.v1.product.dto.ProductResponseDto;
 import com.marketsystem.api.v1.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

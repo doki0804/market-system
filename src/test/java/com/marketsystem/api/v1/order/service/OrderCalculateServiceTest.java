@@ -32,9 +32,6 @@ class OrderCalculationServiceTest {
     @InjectMocks
     private OrderCalculationService orderCalculationService;
 
-    @Captor
-    private ArgumentCaptor<Long> customerIdCaptor;
-
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
@@ -93,7 +90,7 @@ class OrderCalculationServiceTest {
         assertEquals(2, draft.getOrderItems().size());
         assertEquals(2, draft.getCartItems().size());
 
-        OrderItem oi1 = draft.getOrderItems().get(0);
+        OrderItem oi1 = draft.getOrderItems().getFirst();
         assertEquals(product1.getId(), oi1.getProductId());
         assertEquals(product1.getName(), oi1.getProductName());
         assertEquals(product1.getPrice(), oi1.getProductPrice());
@@ -117,9 +114,7 @@ class OrderCalculationServiceTest {
         when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
 
         // When & Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            orderCalculationService.calculateOrderInfo(customerId);
-        });
+        BusinessException exception = assertThrows(BusinessException.class, () -> orderCalculationService.calculateOrderInfo(customerId));
 
         assertEquals(ErrorCode.CUSTOMER_NOT_FOUND, exception.getErrorCode());
         assertEquals("Customer ID: " + customerId, exception.getMessage());
@@ -141,9 +136,7 @@ class OrderCalculationServiceTest {
         when(cartService.getCartItemsEntity(customerId)).thenReturn(Arrays.asList());
 
         // When & Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            orderCalculationService.calculateOrderInfo(customerId);
-        });
+        BusinessException exception = assertThrows(BusinessException.class, () -> orderCalculationService.calculateOrderInfo(customerId));
 
         assertEquals(ErrorCode.CART_EMPTY, exception.getErrorCode());
         assertEquals("No items in cart", exception.getMessage());
@@ -182,9 +175,7 @@ class OrderCalculationServiceTest {
         when(cartService.getCartItemsEntity(customerId)).thenReturn(cartItems);
 
         // When & Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            orderCalculationService.calculateOrderInfo(customerId);
-        });
+        BusinessException exception = assertThrows(BusinessException.class, () -> orderCalculationService.calculateOrderInfo(customerId));
 
         assertEquals(ErrorCode.OUT_OF_STOCK, exception.getErrorCode());
         assertEquals("Product ID: " + product1.getId() +

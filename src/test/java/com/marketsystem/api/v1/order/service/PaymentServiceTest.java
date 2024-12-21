@@ -171,9 +171,7 @@ class PaymentServiceTest {
         when(paymentRepository.findByOrderIdWithOrderItems(orderId)).thenReturn(Optional.empty());
 
         // When & Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            paymentService.getPaymentDetails(orderId);
-        });
+        BusinessException exception = assertThrows(BusinessException.class, () -> paymentService.getPaymentDetails(orderId));
 
         assertEquals(ErrorCode.PAYMENT_NOT_FOUND, exception.getErrorCode());
         assertEquals("Payment not found for Order ID: " + orderId, exception.getMessage());

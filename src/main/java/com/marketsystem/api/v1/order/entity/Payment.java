@@ -37,15 +37,4 @@ public class Payment extends BaseEntity {
         this.status = status;
         this.message = message;
     }
-
-    public void markAsSuccess(String transactionId, String message) {
-        this.status = PaymentStatus.SUCCESS;
-        this.transactionId = transactionId;
-        this.message = message;
-    }
-
-    public void markAsFailed(String message) {
-        this.status = PaymentStatus.FAILED;
-        this.message = message;
-    }
 }

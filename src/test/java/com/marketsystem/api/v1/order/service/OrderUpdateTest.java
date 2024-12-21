@@ -109,7 +109,7 @@ class OrderUpdateServiceTest {
                 .name("Product B")
                 .price(2000L)
                 .stock(10)
-                .build();;
+                .build();
 
         Product product2 = Product.builder()
                 .id(2002L)
@@ -165,9 +165,7 @@ class OrderUpdateServiceTest {
         when(productRepository.findById(3001L)).thenReturn(Optional.empty());
 
         // When & Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            orderUpdateService.handlePaymentSuccess(order);
-        });
+        BusinessException exception = assertThrows(BusinessException.class, () -> orderUpdateService.handlePaymentSuccess(order));
 
         assertEquals(ErrorCode.PRODUCT_NOT_FOUND, exception.getErrorCode());
         assertEquals("Product ID: 3001", exception.getMessage());
