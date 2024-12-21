@@ -1,5 +1,6 @@
 package com.marketsystem.api.v1.product.service;
 
+import com.marketsystem.api.v1.common.dto.PaginatedResponse;
 import com.marketsystem.api.v1.common.enums.ErrorCode;
 import com.marketsystem.api.v1.common.exception.BusinessException;
 import com.marketsystem.api.v1.product.dto.ProductRequestDto;
@@ -8,6 +9,8 @@ import com.marketsystem.api.v1.product.entity.Product;
 import com.marketsystem.api.v1.product.mapper.ProductMapper;
 import com.marketsystem.api.v1.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,9 +44,18 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductResponseDto> getAvailablePurchaseProducts() {
-        List<Product> products = productRepository.findByStockGreaterThanEqual(0);
-        return productMapper.toDtoList(products);
+    public PaginatedResponse<ProductResponseDto> getAvailablePurchaseProducts(Pageable pageable) {
+        Page<ProductResponseDto> productsPage = productRepository.findByStockGreaterThanEqual(0, pageable)
+                .map(productMapper::toDto);
+
+        return PaginatedResponse.<ProductResponseDto>builder()
+                .content(productsPage.getContent())
+                .pageNumber(productsPage.getNumber())
+                .pageSize(productsPage.getSize())
+                .totalElements(productsPage.getTotalElements())
+                .totalPages(productsPage.getTotalPages())
+                .last(productsPage.isLast())
+                .build();
     }
 
     @Transactional

@@ -34,7 +34,8 @@ public class Orders extends BaseEntity {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @Builder
-    public Orders(Customer customer, Long totalAmount, OrderStatus status, List<OrderItem> orderItems) {
+    public Orders(Long id, Customer customer, Long totalAmount, OrderStatus status, List<OrderItem> orderItems) {
+        this.id = id;
         this.customer = customer;
         this.totalAmount = totalAmount;
         this.status = status;

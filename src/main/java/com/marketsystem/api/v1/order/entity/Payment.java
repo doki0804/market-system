@@ -30,7 +30,8 @@ public class Payment extends BaseEntity {
     private String message;
 
     @Builder
-    public Payment(Orders order, String transactionId, PaymentStatus status, String message) {
+    public Payment(Long id, Orders order, String transactionId, PaymentStatus status, String message) {
+        this.id = id;
         this.order = order;
         this.transactionId = transactionId;
         this.status = status;

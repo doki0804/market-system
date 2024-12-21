@@ -1,5 +1,6 @@
 package com.marketsystem.api.v1.product.controller;
 
+import com.marketsystem.api.v1.common.dto.PaginatedResponse;
 import com.marketsystem.api.v1.common.enums.BusinessCode;
 import com.marketsystem.api.v1.common.utils.CommonResponse;
 import com.marketsystem.api.v1.product.dto.ProductRequestDto;
@@ -7,13 +8,16 @@ import com.marketsystem.api.v1.product.dto.ProductResponseDto;
 import com.marketsystem.api.v1.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/vi/product")
+@RequestMapping("/api/v1/product")
 @RestController
 public class ProductController {
 
@@ -31,15 +35,19 @@ public class ProductController {
         return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS,res));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllProductList() {
         var res =productService.getAllProducts();
         return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS, res));
     }
 
     @GetMapping
-    public ResponseEntity<?> getAvailablePurchaseProductList() {
-        var res =productService.getAvailablePurchaseProducts();
+    public ResponseEntity<?> getAvailablePurchaseProductList(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        PaginatedResponse<ProductResponseDto> res = productService.getAvailablePurchaseProducts(pageable);
         return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS, res));
     }
 
