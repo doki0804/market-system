@@ -26,6 +26,7 @@
     - [2. 결제 상세 조회](#2-결제-상세-조회)
 - [Error Handling](#error-handling)
 - [Examples](#examples)
+- [테이블 관계도](#ERD)
 
 ---
 
@@ -728,3 +729,6 @@
   ```
 
 ---
+
+## ERD
+![test_db1](https://github.com/user-attachments/assets/6d570524-b57a-4a70-bab6-1a4f4bd2c049)
