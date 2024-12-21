@@ -54,14 +54,20 @@
 ## 사용 기술
 
 - **프로그래밍 언어:** Java 21
-- **프레임워크:** Spring Boot 3.4
-- **데이터베이스:** MariaDb
+- **프레임워크:** Spring Boot 3.4.0
+- **데이터베이스:** MariaDb 10.6.20
 - **ORM:** Hibernate/JPA
 - **빌드 도구:** Maven/Gradle
 - **테스트:** JUnit 5, Mockito, AssertJ
 - **기타 도구:**
-  - HTTP 클라이언트 작업을 위한 RestTemplate
+  - 외부 API 작업을 위한 RestTemplate
   - 코드 감소를 위한 Lombok
   - 로깅을 위한 SLF4J
 
 ---
+
+## EndPoints
+
+ - **상품**
+ - **장바구니**
+ - **주문**
