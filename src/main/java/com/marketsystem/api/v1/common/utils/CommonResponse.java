@@ -27,7 +27,7 @@ public class CommonResponse<T> {
         return new CommonResponse<>( businessCode.getStatus(), businessCode.getMessage(), null);
     }
 
-    public static <T> CommonResponse<T> error(int code, String message) {
-        return new CommonResponse<>(code, message, null);
+    public static <T> CommonResponse<T> error(int code, String message, T data) {
+        return new CommonResponse<>(code, message, data);
     }
 }

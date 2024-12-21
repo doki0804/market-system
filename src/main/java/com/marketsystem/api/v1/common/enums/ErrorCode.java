@@ -5,6 +5,7 @@ public enum ErrorCode {
     OUT_OF_STOCK(200, "Out of stock"),
 
     BAD_PARAMETER(400, "Bad parameter"),
+    VALIDATION_ERROR(400, "Validation error"),
 
     CUSTOMER_NOT_FOUND(404, "Customer not found"),
     PRODUCT_NOT_FOUND(404, "Product not found"),
@@ -15,6 +16,7 @@ public enum ErrorCode {
 
     NOT_FOUND(404, "Resource not found"),
     CONFLICT(409, "Conflict"),
+    PAYMENT_SERVER_ERROR(503, "Payment server error"),
     INTERNAL_SERVER_ERROR(500, "Internal server error");
 
     private final int status;

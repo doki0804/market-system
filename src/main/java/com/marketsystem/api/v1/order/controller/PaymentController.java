@@ -1,10 +1,12 @@
 package com.marketsystem.api.v1.order.controller;
 
 import com.marketsystem.api.v1.common.enums.BusinessCode;
+import com.marketsystem.api.v1.common.enums.ErrorCode;
 import com.marketsystem.api.v1.common.utils.CommonResponse;
 import com.marketsystem.api.v1.order.dto.OrderCreateResponseDto;
 import com.marketsystem.api.v1.order.dto.OrderRequestDto;
 import com.marketsystem.api.v1.order.dto.PaymentDetailsDto;
+import com.marketsystem.api.v1.order.enums.PaymentStatus;
 import com.marketsystem.api.v1.order.service.OrderService;
 import com.marketsystem.api.v1.order.service.PaymentService;
 import jakarta.validation.Valid;
@@ -27,7 +29,11 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<?> placeOrder(@Valid @RequestBody OrderRequestDto requestDto) {
         OrderCreateResponseDto res = orderService.placeOrder(requestDto.getCustomerId());
-        return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS,res));
+        if(res.getStatus().equals("SUCCESS")) {
+            return ResponseEntity.ok(CommonResponse.success(BusinessCode.SUCCESS, res));
+        } else {
+            return ResponseEntity.internalServerError().body(CommonResponse.error(ErrorCode.PAYMENT_SERVER_ERROR.getStatus(), ErrorCode.PAYMENT_SERVER_ERROR.getMessage(),res));
+        }
     }
 
     @GetMapping("{orderId}")

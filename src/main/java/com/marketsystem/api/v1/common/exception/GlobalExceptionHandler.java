@@ -1,6 +1,7 @@
 package com.marketsystem.api.v1.common.exception;
 
 import com.marketsystem.api.v1.common.enums.ErrorCode;
+import jakarta.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -34,10 +35,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex){
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors()
                 .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
-        return ResponseEntity.badRequest().body(errors);
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                ErrorCode.VALIDATION_ERROR.getStatus(),
+                ErrorCode.VALIDATION_ERROR.getMessage(),
+                errors.toString()
+        );
+
+        return ResponseEntity.status(ErrorCode.VALIDATION_ERROR.getStatus()).body(errorResponse);
     }
 }
